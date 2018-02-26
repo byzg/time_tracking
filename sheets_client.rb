@@ -6,7 +6,6 @@ require 'fileutils'
 class SheetsClient
   OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'
   APPLICATION_NAME = 'Google Sheets API Ruby Quickstart'
-  CLIENT_SECRETS_PATH = 'client_secret.json'
   CREDENTIALS_PATH = File.join(Dir.home, '.credentials',
                                "sheets.googleapis.com-ruby-quickstart.yaml")
   SCOPE = Google::Apis::SheetsV4::AUTH_SPREADSHEETS
@@ -35,7 +34,7 @@ class SheetsClient
   def authorize
     FileUtils.mkdir_p(File.dirname(CREDENTIALS_PATH))
 
-    client_id = Google::Auth::ClientId.from_file(CLIENT_SECRETS_PATH)
+    client_id = Google::Auth::ClientId.from_hash(SECRETS[:sheets])
     token_store = Google::Auth::Stores::FileTokenStore.new(file: CREDENTIALS_PATH)
     authorizer = Google::Auth::UserAuthorizer.new(
         client_id, SCOPE, token_store)
