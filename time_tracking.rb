@@ -26,8 +26,14 @@ class TimeTracking
     sheets_client.write(range, values)
   end
 
+  def get_projects_and_colors(date)
+    sheets_client.get_projects_and_colors(date)
+  end
+
   def run
-    fill('26.02.2018')
+    date = Date.parse('26.02.2018'.to_s)
+    # fill(date)
+    p get_projects_and_colors(date)
   end
 end
 

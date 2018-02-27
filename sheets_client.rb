@@ -26,6 +26,19 @@ class SheetsClient
     service.update_spreadsheet_value(SPREADSHEET_ID, range, value_range_object, value_input_option: 'USER_ENTERED')
   end
 
+  def get_projects_and_colors(date)
+    range = RangeFormatter.new(date, self).to_m('E24:E28')
+    service
+      .get_spreadsheet(SPREADSHEET_ID, include_grid_data: true, ranges: range)
+      .sheets[0].data[0].row_data.map do |row_data|
+      formatted_value = row_data.values[0].formatted_value
+      next unless formatted_value
+      name, id = formatted_value.split('#')
+      color = row_data.values[0].effective_format.background_color
+      [id, { name: name, color: color }]
+    end.compact.to_h
+  end
+
   private
   def service
     @service
