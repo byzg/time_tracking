@@ -10,20 +10,24 @@ require './range_formatter'
 I18n.default_locale = :ru
 
 class TimeTracking
-  attr_reader :sheets_client
+  attr_reader :sheets_client, :kodep_timer_client
   def initialize
     @sheets_client = SheetsClient.new
+    @kodep_timer_client = KodepTimerClient.new
   end
 
   def fill(date)
-    range_formatter = RangeFormatter.new(date, @sheets_client)
-    p range_formatter.date_col
-    # sheets_client.write("#{range_month}#{col}2", [[123]])
+    date = Date.parse(date.to_s)
+    values = kodep_timer_client.time_tracks(date).map do |time_track|
+      [time_track[:task_name], (time_track[:duration].to_f / 60).round(2)]
+    end
+    range_formatter = RangeFormatter.new(date, sheets_client)
+    range = range_formatter.date_xy_start
+    sheets_client.write(range, values)
   end
 
   def run
-    # p KodepTimerClient.new.time_tracks
-    fill('09.02.2018')
+    fill('26.02.2018')
   end
 end
 

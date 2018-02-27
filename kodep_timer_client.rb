@@ -5,8 +5,8 @@ class KodepTimerClient
     @headers = { cookie: "Auth-Token=#{auth_response[:auth_token]}" }
   end
 
-  def time_tracks
-    date = Date.yesterday.strftime('%Y-%m-%d')
+  def time_tracks(date)
+    date = date.strftime('%Y-%m-%d')
     execute('/time_tracks', :get,{
       q: { tracking_date_gteq: date, tracking_date_lteq: date, limit: 1000 }
     })[:time_tracks]
