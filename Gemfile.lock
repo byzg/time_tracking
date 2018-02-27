@@ -60,6 +60,8 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.1)
+    russian (0.6.0)
+      i18n (>= 0.5.0)
     signet (0.8.1)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -81,6 +83,7 @@ DEPENDENCIES
   byebug
   google-api-client
   rest-client
+  russian
 
 BUNDLED WITH
    1.16.1
