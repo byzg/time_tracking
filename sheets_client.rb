@@ -15,6 +15,7 @@ class SheetsClient
     @service = Google::Apis::SheetsV4::SheetsService.new
     @service.client_options.application_name = APPLICATION_NAME
     @service.authorization = authorize
+    Google::Apis.logger.level = Logger::DEBUG
   end
 
   def get(range)
@@ -22,8 +23,19 @@ class SheetsClient
   end
 
   def write(range, values)
-    value_range_object = Google::Apis::SheetsV4::ValueRange.new(range: range, values: values)
-    service.update_spreadsheet_value(SPREADSHEET_ID, range, value_range_object, value_input_option: 'USER_ENTERED')
+    # value_range_object = Google::Apis::SheetsV4::ValueRange.new(range: 'февраль18!M14', values: [['qwe']])
+    # service.update_spreadsheet_value(SPREADSHEET_ID, 'февраль18!M14', value_range_object, value_input_option: 'USER_ENTERED')
+
+    # data = Google::Apis::SheetsV4::ValueRange.new( range: 'февраль18!M14', values: [['qwe']] )
+    # batch_update_values = Google::Apis::SheetsV4::BatchUpdateValuesRequest.new(data: data, value_input_option: 'USER_ENTERED')
+    # batch_update_values = {
+    #                  "updateSpreadsheetProperties": {
+    #                    "properties": {"title": "My New Title"},
+    #                    "fields": "title"
+    #                  }
+    #
+    # }.to_json
+    # service.batch_update_values(SPREADSHEET_ID, batch_update_values, options: { skip_serialization: true })
   end
 
   def get_projects_and_colors(date)

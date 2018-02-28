@@ -39,6 +39,7 @@ class TimeTracking
     # p redis_service[:test]
     # p redis_service.fetch('test', { foo: :bar })
     # fill(date)
+    sheets_client.write(1, 1)
     # p get_projects_and_colors(date)
   end
 end
