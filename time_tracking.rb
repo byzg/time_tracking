@@ -6,6 +6,7 @@ require './secrects'
 require './sheets_client'
 require './kodep_timer_client'
 require './range_formatter'
+require './redis_service'
 
 I18n.default_locale = :ru
 
@@ -32,8 +33,13 @@ class TimeTracking
 
   def run
     date = Date.parse('26.02.2018'.to_s)
+    # redis_service = RedisService.new
+    # redis_service.redis.del('test')
+    # redis_service[:test] = { foo: :bar }
+    # p redis_service[:test]
+    # p redis_service.fetch('test', { foo: :bar })
     # fill(date)
-    p get_projects_and_colors(date)
+    # p get_projects_and_colors(date)
   end
 end
 
