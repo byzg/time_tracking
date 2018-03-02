@@ -1,25 +1,24 @@
 class DateToCell
   attr_reader :date, :sheets_client
-  def initialize(sheets_client)
-    @date = date
-    @sheets_client = sheets_client
-  end
 
   def convert(date)
-    p sheets
-    { sheet_id: 0, start_row_index: 0, start_column_index: 0 }
+    {
+      sheet_id: sheets[month(date)],
+      start_row_index: 0,
+      start_column_index: 0
+    }
   end
 
   private
   def sheets
-    config.redis_service.fetch(:sheets) do
+    @sheets ||= config.redis_service.fetch(:sheets) do
       sheets_client.sheets.sheets.map(&:properties).map do |property|
         [property.title, property.sheet_id]
       end.to_h
     end
   end
 
-  def month
+  def month(date)
     @month ||= "#{I18n.l(date, format: '%B').mb_chars.downcase.to_s}#{date.year.to_s[2..3]}!"
   end
 

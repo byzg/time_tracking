@@ -1,4 +1,4 @@
-require "./src/config"
+require './src/config'
 
 class TimeTracking
   attr_reader :sheets_client, :kodep_timer_client, :date_to_cell
@@ -23,9 +23,8 @@ class TimeTracking
 
   def run
     date = Date.parse('26.02.2018'.to_s)
-    config.logger.info 'test'
     # config.redis_service.flushall
-    # p config.date_to_cell.convert(date)
+    p config.date_to_cell.convert(date)
     # redis_service = RedisService.new
     # redis_service.redis.del('test')
     # redis_service[:test] = { foo: :bar }
@@ -34,6 +33,7 @@ class TimeTracking
     # fill(date)
     # sheets_client.write(1, 1)
     # p get_projects_and_colors(date)
+
   end
 end
 

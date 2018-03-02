@@ -11,6 +11,7 @@ require './src/redis_service'
 I18n.default_locale = :ru
 
 class Config
+
   def sheets_client
     @sheets_client ||= SheetsClient.new
   end
@@ -29,12 +30,8 @@ class Config
 
   def logger
     return @logger if @logger
-    # @logger ||= Logger.new File.new('./time_tracking.log')
-    require 'stringio'
-    require 'logger'
     file = File.open('logfile.log', 'w')
-    p file
-    @logger = Logger.new file
+    @logger = Logger.new(STDOUT || file)
   end
 end
 

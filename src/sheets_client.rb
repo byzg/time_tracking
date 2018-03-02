@@ -9,7 +9,9 @@ class SheetsClient
   CREDENTIALS_PATH = File.join(Dir.home, '.credentials',
                                "sheets.googleapis.com-ruby-quickstart.yaml")
   SCOPE = Google::Apis::SheetsV4::AUTH_SPREADSHEETS
-  SPREADSHEET_ID = '1iPngiFuXQFRQMy5Oyhn9okO6_ayIVQE3irKBKYmSf78' #'1koPtuzH9CDf3Wf_9ar5Td0UJVKdasv2gTeryjKL2iKg'
+  SPREADSHEET_ID = '1koPtuzH9CDf3Wf_9ar5Td0UJVKdasv2gTeryjKL2iKg'
+  # '1iPngiFuXQFRQMy5Oyhn9okO6_ayIVQE3irKBKYmSf78'
+  # '1koPtuzH9CDf3Wf_9ar5Td0UJVKdasv2gTeryjKL2iKg'
 
 
 
