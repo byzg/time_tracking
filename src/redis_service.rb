@@ -20,4 +20,8 @@ class RedisService
     result = self[key]
     result || (self[key] = value || yield)
   end
+
+  def flushall
+    redis.flushall
+  end
 end

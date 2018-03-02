@@ -17,7 +17,7 @@ class SheetsClient
     @service = Google::Apis::SheetsV4::SheetsService.new
     @service.client_options.application_name = APPLICATION_NAME
     @service.authorization = authorize
-    Google::Apis.logger.level = Logger::DEBUG
+    Google::Apis.logger = config.logger
   end
 
   def get(range)
@@ -94,6 +94,10 @@ class SheetsClient
     # find_replace_response = result.replies[1].find_replace
     # puts "#{find_replace_response.occurrences_changed} replacements made."
     p result
+  end
+
+  def sheets
+    service.get_spreadsheet(SPREADSHEET_ID)
   end
 
   def get_projects_and_colors(date)
