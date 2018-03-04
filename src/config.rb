@@ -7,6 +7,7 @@ require './src/sheets_client'
 require './src/kodep_timer_client'
 require './src/date_to_cell'
 require './src/redis_service'
+require './src/update_cells_request_builder'
 
 I18n.default_locale = :ru
 
@@ -21,7 +22,7 @@ class Config
   end
 
   def date_to_cell
-    @date_to_cell ||= DateToCell.new(sheets_client)
+    @date_to_cell ||= DateToCell.new
   end
 
   def redis_service

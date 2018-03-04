@@ -10,10 +10,6 @@ class SheetsClient
                                "sheets.googleapis.com-ruby-quickstart.yaml")
   SCOPE = Google::Apis::SheetsV4::AUTH_SPREADSHEETS
   SPREADSHEET_ID = '1koPtuzH9CDf3Wf_9ar5Td0UJVKdasv2gTeryjKL2iKg'
-  # '1iPngiFuXQFRQMy5Oyhn9okO6_ayIVQE3irKBKYmSf78'
-  # '1koPtuzH9CDf3Wf_9ar5Td0UJVKdasv2gTeryjKL2iKg'
-
-
 
   def initialize
     @service = Google::Apis::SheetsV4::SheetsService.new
@@ -26,76 +22,10 @@ class SheetsClient
     service.get_spreadsheet_values(SPREADSHEET_ID, range)
   end
 
-  def write(range, values)
-    # value_range_object = Google::Apis::SheetsV4::ValueRange.new(range: 'февраль18!M14', values: [['qwe']])
-    # service.update_spreadsheet_value(SPREADSHEET_ID, 'февраль18!M14', value_range_object, value_input_option: 'USER_ENTERED')
-
-    # data = Google::Apis::SheetsV4::ValueRange.new( range: 'февраль18!M14', values: [['qwe']] )
-    # batch_update_values = Google::Apis::SheetsV4::BatchUpdateValuesRequest.new(data: data, value_input_option: 'USER_ENTERED')
-    # batch_update_values = {
-    #                  "updateSpreadsheetProperties": {
-    #                    "properties": {"title": "My New Title"},
-    #                    "fields": "title"
-    #                  }
-    #
-    # }.to_json
-    # service.batch_update_values(SPREADSHEET_ID, batch_update_values, options: { skip_serialization: true })
-    requests = []
-# Change the name of sheet ID '0' (the default first sheet on every
-# spreadsheet)
-    requests.push({
-                    "update_cells": {
-                      # "start": {
-                      #   "sheet_id": 0,
-                      #   "row_index": 0,
-                      #   "column_index": 0
-                      # },
-                      range: {
-                        "sheet_id": 0,
-                        "start_row_index": 2,
-                        "end_row_index": 4,
-                        "start_column_index": 1,
-                        "end_column_index": 7,
-                      },
-                      "rows": [
-                        {
-                          "values": [
-                            {
-                              "user_entered_value": {"number_value": 1},
-                              "user_entered_format": {"background_color": {"red": 1}}
-                            }, {
-                              "user_entered_value": {"number_value": 2},
-                              "user_entered_format": {"background_color": {"blue": 1}}
-                            }, {
-                              "user_entered_value": {"number_value": 3},
-                              "user_entered_format": {"background_color": {"green": 1}}
-                            }, {
-                              "user_entered_value": {"number_value": 7}
-                            }, {
-                              "user_entered_value": {"number_value": 3},
-                              "user_entered_format": {"background_color": {"green": 1}}
-                            }
-                          ]
-                        },
-                        {
-                          "values": [
-                            {
-                              "user_entered_value": {"number_value": 1},
-                              "user_entered_format": {"background_color": {"red": 1}}
-                            }
-                          ]
-                        }
-                      ],
-                      "fields": "userEnteredValue,userEnteredFormat.backgroundColor"
-                    }
-                  })
-# Add additional requests (operations) ...
-
-    body = {requests: requests}
-    result = service.batch_update_spreadsheet(SPREADSHEET_ID, body, {})
-    # find_replace_response = result.replies[1].find_replace
-    # puts "#{find_replace_response.occurrences_changed} replacements made."
-    p result
+  def write(requests)
+    pp requests
+    body = {requests: Array[requests]}
+    service.batch_update_spreadsheet(SPREADSHEET_ID, body, {})
   end
 
   def sheets
