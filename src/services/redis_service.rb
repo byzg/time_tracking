@@ -1,5 +1,4 @@
 require 'redis'
-require './src/logger_helper'
 
 class RedisService
   include LoggerHelper

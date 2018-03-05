@@ -1,8 +1,14 @@
 require 'rest-client'
+
 class KodepTimerClient
+  include LoggerHelper
   API_ROOT = 'https://timer.kodep.ru/api'
   def initialize
-    @headers = { cookie: "Auth-Token=#{auth_response[:auth_token]}" }
+    config.log_pause do
+      @headers = config.redis_service.fetch(:cookie) do
+        { cookie: "Auth-Token=#{auth_response[:auth_token]}" }
+      end
+    end
   end
 
   def time_tracks(date)
@@ -12,18 +18,24 @@ class KodepTimerClient
     })[:time_tracks]
   end
 
+  def projects
+    execute('/projects', :get)[:projects]
+  end
+
   private
   def auth_response
     execute('/sessions', :post, SECRETS[:kodep_timer])
   end
 
   def execute(path, method, payload = {})
-    parse(RestClient::Request.execute(
-      method: method,
-      url: "#{API_ROOT}#{path}",
-      payload: payload,
-      headers: @headers
-    ))
+    log("Request #{method.upcase} #{API_ROOT}#{path}. Response:") do
+      parse(RestClient::Request.execute(
+        method: method,
+        url: "#{API_ROOT}#{path}",
+        payload: payload,
+        headers: @headers
+      ))
+    end
   end
 
   def parse(response)

@@ -2,31 +2,30 @@ require 'bundler/setup'
 Bundler.require
 require 'active_support'
 require 'active_support/core_ext'
-require './src/secrects'
-require './src/sheets_client'
-require './src/kodep_timer_client'
-require './src/date_to_cell'
-require './src/redis_service'
-require './src/update_cells_request_builder'
+
+{
+  helpers: %i(date_to_cell human_month logger_helper secrets),
+  services: %i(projects redis_service update_cells_request_builder),
+  app: %i(sheets_client kodep_timer_client)
+}.each_pair { |k, files| files.each {|file| require "./src/#{k}/#{file}" } }
 
 I18n.default_locale = :ru
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.irregular 'projects', 'projects'
+end
 
 class Config
+  DEFINED = %i(sheets_client kodep_timer_client date_to_cell redis_service projects)
+  attr_accessor :_log_pause
 
-  def sheets_client
-    @sheets_client ||= SheetsClient.new
-  end
-
-  def kodep_timer_client
-    @kodep_timer_client ||= KodepTimerClient.new
-  end
-
-  def date_to_cell
-    @date_to_cell ||= DateToCell.new
-  end
-
-  def redis_service
-    @redis_service ||= RedisService.new
+  def method_missing(name)
+    if DEFINED.include?(name.to_sym)
+      var_name = "@#{name}"
+      config_instance = name.to_s.classify.constantize.new
+      instance_variable_get(var_name) || instance_variable_set(var_name, config_instance)
+    else
+      super(name)
+    end
   end
 
   def logger
@@ -34,8 +33,16 @@ class Config
     file = File.open('logfile.log', 'w')
     @logger = Logger.new(STDOUT || file)
   end
+
+  def log_pause
+    self._log_pause = true
+    yield
+    self._log_pause = false
+  end
 end
 
+
+$config = Config.new
 def config
-  @config ||= Config.new
+  $config
 end

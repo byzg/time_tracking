@@ -19,8 +19,6 @@ class DateToCell
     end
   end
 
-
-
   class DatePos
     def initialize(date)
       @date = date
@@ -35,7 +33,7 @@ class DateToCell
     end
 
     def human_month
-      @human_month ||= "#{I18n.l(date, format: '%B').mb_chars.downcase.to_s}#{date.year.to_s[2..3]}"
+      @human_month ||= HumanMonth[date]
     end
 
     private

@@ -5,7 +5,7 @@ module LoggerHelper
     block_result = nil
     if block_given?
       block_result = yield
-      config.logger.info "\t#{block_result.inspect}"
+      config.logger.info(config._log_pause ? '*'*20 : "\t#{block_result.inspect}")
     end
     config.logger.info ''
     block_result
