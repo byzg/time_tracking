@@ -15,15 +15,21 @@ class SheetsClient
     @service = Google::Apis::SheetsV4::SheetsService.new
     @service.client_options.application_name = APPLICATION_NAME
     @service.authorization = authorize
+    Google::Apis.logger = config.logger
   end
 
   def get(range)
     service.get_spreadsheet_values(SPREADSHEET_ID, range)
   end
 
-  def write(range, values)
-    value_range_object = Google::Apis::SheetsV4::ValueRange.new(range: range, values: values)
-    service.update_spreadsheet_value(SPREADSHEET_ID, range, value_range_object, value_input_option: 'USER_ENTERED')
+  def write(requests)
+    pp requests
+    body = {requests: Array[requests]}
+    service.batch_update_spreadsheet(SPREADSHEET_ID, body, {})
+  end
+
+  def sheets
+    service.get_spreadsheet(SPREADSHEET_ID)
   end
 
   def get_projects_and_colors(date)
