@@ -23,26 +23,13 @@ class SheetsClient
   end
 
   def write(requests)
-    pp requests
     body = {requests: Array[requests]}
     service.batch_update_spreadsheet(SPREADSHEET_ID, body, {})
   end
 
-  def sheets
-    service.get_spreadsheet(SPREADSHEET_ID)
-  end
-
-  def get_projects_and_colors(date)
-    range = RangeFormatter.new(date, self).to_m('E24:E28')
-    service
-      .get_spreadsheet(SPREADSHEET_ID, include_grid_data: true, ranges: range)
-      .sheets[0].data[0].row_data.map do |row_data|
-      formatted_value = row_data.values[0].formatted_value
-      next unless formatted_value
-      name, id = formatted_value.split('#')
-      color = row_data.values[0].effective_format.background_color
-      [id, { name: name, color: color }]
-    end.compact.to_h
+  def sheets(opts = nil)
+    args = [SPREADSHEET_ID, opts].compact
+    service.get_spreadsheet(*args)
   end
 
   private
