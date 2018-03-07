@@ -10,7 +10,7 @@ class RedisService
   def [](key)
     log("reading with key: '#{key}'") do
       result = redis[key.to_s]
-      result ? JSON.parse(result) : nil
+      result ? JSON.parse(result, symbolize_names: true) : nil
     end
   end
 

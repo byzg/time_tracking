@@ -2,7 +2,7 @@ class Projects < BaseCollection
   def fetch(date, id)
     project = lazy_find(id)
     projects_colors = ProjectsColors.new(date)
-    projects_colors.fetch
+    projects_colors.fetch('GarantME_Front')
   end
 
   protected
@@ -15,6 +15,6 @@ class Projects < BaseCollection
   end
 
   def find_param
-    'id'
+    :id
   end
 end

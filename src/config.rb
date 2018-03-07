@@ -5,7 +5,8 @@ require 'active_support/core_ext'
 
 {
   helpers: %i(date_to_cell human_month logger_helper secrets),
-  services: %i(redis_service update_cells_request_builder),
+  services: %i(redis_service),
+  update_request_builder: %i(base cells),
   collections: %i(base_collection projects projects_colors),
   app: %i(sheets_client kodep_timer_client)
 }.each_pair { |k, files| files.each {|file| require "./src/#{k}/#{file}" } }

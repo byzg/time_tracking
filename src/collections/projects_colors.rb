@@ -1,18 +1,29 @@
 class ProjectsColors < BaseCollection
+  COL = 'E'
+  ROW_FIRST = 24
+  ROW_LAST = 28
   attr_reader :date
   def initialize(date)
     @date = date
   end
 
-  def fetch
-    lazy_find('GarantME')
+  def fetch(project_name)
+    project = lazy_find(project_name)
+    return project[:color] if project
+    project = lazy_find(nil)
+    index = index(project)
+    range = "#{HumanMonth[date]}!#{COL}#{ROW_FIRST + index - 1}:#{COL}#{ROW_FIRST + index - 1}"
+    request = UpdateRequestBuilder::Base.build(
+      range, [[{value: project_name, color: project[:color]}]]
+    )
+    config.sheets_client.write(request)
+    lazy_find(project_name)[:color]
   end
 
   protected
   def load
-    range = "#{HumanMonth[date]}!E24:E28"
     config.sheets_client
-      .sheets(include_grid_data: true, ranges: range)
+      .sheets(include_grid_data: true, ranges: load_range)
       .sheets[0].data[0].row_data
       .map do |row_data|
         name = row_data.values[0].formatted_value
@@ -26,6 +37,10 @@ class ProjectsColors < BaseCollection
   end
 
   def find_param
-    'name'
+    :name
+  end
+
+  def load_range
+    "#{HumanMonth[date]}!#{COL}#{ROW_FIRST}:#{COL}#{ROW_LAST}"
   end
 end

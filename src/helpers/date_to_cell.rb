@@ -4,20 +4,13 @@ class DateToCell
   def convert(date)
     date_pos = DatePos.new(date)
     {
-      sheet_id: sheets[date_pos.human_month],
+      date: date,
       start_row_index: date_pos.row,
       start_column_index: date_pos.col
     }
   end
 
   private
-  def sheets
-    @sheets ||= config.redis_service.fetch(:sheets) do
-      config.sheets_client.sheets.sheets.map(&:properties).map do |property|
-        [property.title, property.sheet_id]
-      end.to_h
-    end
-  end
 
   class DatePos
     def initialize(date)
