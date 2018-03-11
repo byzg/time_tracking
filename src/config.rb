@@ -2,6 +2,7 @@ require 'bundler/setup'
 Bundler.require
 require 'active_support'
 require 'active_support/core_ext'
+require 'rufus-scheduler'
 
 {
   helpers: %i(date_to_cell human_month logger_helper secrets),
