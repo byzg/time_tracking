@@ -39,6 +39,6 @@ class KodepTimerClient
   end
 
   def parse(response)
-    ActiveSupport::HashWithIndifferentAccess.new(JSON.parse(response.body))
+    JSON.parse(response.body, symbolize_names: true)
   end
 end

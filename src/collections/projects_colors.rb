@@ -9,7 +9,7 @@ class ProjectsColors < BaseCollection
 
   def fetch(project_name)
     project = lazy_find(project_name)
-    return project[:color] if project
+    return project if project
     project = lazy_find(nil)
     index = index(project)
     range = "#{HumanMonth[date]}!#{COL}#{ROW_FIRST + index - 1}:#{COL}#{ROW_FIRST + index - 1}"
@@ -17,7 +17,7 @@ class ProjectsColors < BaseCollection
       range, [[{value: project_name, color: project[:color]}]]
     )
     config.sheets_client.write(request)
-    lazy_find(project_name)[:color]
+    lazy_find(project_name)
   end
 
   protected

@@ -40,12 +40,13 @@ class DateToCell
 
     def search
       return @search_result if @search_result
-      @search_result = {}
+      @search_result = nil
       titles.map do |index, titles_row|
         if col = titles_row.index(date.strftime('%d.%m'))
-          @search_result = { row: index.to_i, col: col.to_i }
+          @search_result = { row: index.to_s.to_i, col: col.to_s.to_i }
         end
       end
+      raise DateNotFoundError.new unless @search_result
       @search_result
     end
 

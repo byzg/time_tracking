@@ -32,7 +32,7 @@ module UpdateRequestBuilder
       elsif @range.is_a?(String)
         month = @range.split('!')[0]
         indexes
-      end.merge(sheet_id: sheets[month])
+      end.merge(sheet_id: sheets[month.to_sym])
     end
 
     def indexes

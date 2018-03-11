@@ -23,7 +23,9 @@ class RedisService
 
   def fetch(key, value = nil)
     result = self[key]
-    result || (self[key] = value || yield)
+    return result if result
+    self[key] = (value || yield)
+    self[key]
   end
 
   def flushall

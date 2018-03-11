@@ -2,7 +2,7 @@ class Projects < BaseCollection
   def fetch(date, id)
     project = lazy_find(id)
     projects_colors = ProjectsColors.new(date)
-    projects_colors.fetch('GarantME_Front')
+    project.merge(projects_colors.fetch(project[:title]).to_h)
   end
 
   protected
