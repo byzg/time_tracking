@@ -10,16 +10,15 @@ class TimeTracking
   def run
     # config.redis_service.flushall
     scheduler = Rufus::Scheduler.new
-    scheduler.every '30s' do
-      (Date.new(2018, 02, 01)..Date.new(2018, 02, 7)).each do |date|
-        config.logger.info ">>>>  Start filling #{date} #{'>' * 40}"
-        begin
-          fill(date)
-        rescue DateNotFoundError
-        end
-        config.logger.info "<<<<  End   filling #{date} #{'<' * 40}"
-        config.logger.info ''
+    scheduler.cron '5 0 * * *' do
+      date = Date.yesterday
+      config.logger.info ">>>>  Start filling #{date} #{'>' * 40}"
+      begin
+        fill(date)
+      rescue DateNotFoundError
       end
+      config.logger.info "<<<<  End   filling #{date} #{'<' * 40}"
+      config.logger.info ''
     end
     scheduler.join
   end
@@ -28,4 +27,4 @@ class DateNotFoundError < RuntimeError; end
 
 app = TimeTracking.new
 # app.fill(Date.today)
-# app.run
+app.run
