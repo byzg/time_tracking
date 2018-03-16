@@ -10,7 +10,7 @@ class TimeTracking
   def run
     # config.redis_service.flushall
     scheduler = Rufus::Scheduler.new
-    scheduler.cron '0 0 4 1/1 * ? *' do
+    scheduler.cron '0 4 * * *' do
       date = Date.yesterday
       config.logger.info ">>>>  Start filling #{date} #{'>' * 40}"
       begin
