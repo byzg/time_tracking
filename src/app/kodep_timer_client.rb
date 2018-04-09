@@ -33,7 +33,8 @@ class KodepTimerClient
         method: method,
         url: "#{API_ROOT}#{path}",
         payload: payload,
-        headers: @headers
+        headers: @headers,
+        verify_ssl: false
       ))
     end
   end
