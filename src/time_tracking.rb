@@ -4,7 +4,7 @@ class TimeTracking
   def fill(date)
     time_tracks = config.kodep_timer_client.time_tracks(date)
     request = UpdateRequestBuilder::TimeTracks.build(time_tracks, date)
-    config.sheets_client.write(request)
+    config.sheets_client.write(request) if time_tracks.present?
   end
 
   def run
