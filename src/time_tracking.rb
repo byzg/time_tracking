@@ -27,5 +27,15 @@ end
 class DateNotFoundError < RuntimeError; end
 
 app = TimeTracking.new
-# app.fill(Date.today)
-app.run
+if ENV['REFILL']
+  config.redis_service.flushall
+  (Date.today.beginning_of_month..Date.yesterday).each do |date|
+    begin
+      app.fill(date)
+    rescue DateNotFoundError
+    end
+  end
+else
+  app.run
+end
+

@@ -46,7 +46,7 @@ class DateToCell
           @search_result = { row: index.to_s.to_i, col: col.to_s.to_i }
         end
       end
-      raise DateNotFoundError.new unless @search_result
+      raise DateNotFoundError.new(@date) unless @search_result
       @search_result
     end
 
